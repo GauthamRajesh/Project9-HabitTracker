@@ -4,9 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by gauth on 1/28/2017.
- */
 
 public class HabitDbHelper extends SQLiteOpenHelper {
     public static final String LOG_TAG = HabitDbHelper.class.getSimpleName();
@@ -19,7 +16,8 @@ public class HabitDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String SQL_CREATE_HABITS_TABLE =  "CREATE TABLE " + HabitContract.HabitEntry.TABLE_NAME + " ("
                 + HabitContract.HabitEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + HabitContract.HabitEntry.COLUMN_HABIT_NAME + " TEXT NOT NULL);";
+                + HabitContract.HabitEntry.COLUMN_HABIT_NAME + " TEXT NOT NULL, "
+                + HabitContract.HabitEntry.COLUMN_DATE + " TEXT NOT NULL);";
         db.execSQL(SQL_CREATE_HABITS_TABLE);
     }
     @Override

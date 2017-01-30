@@ -23,18 +23,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 insertActivity();
+                displayDatabaseInfo(readDatabase());
             }
         });
         mDbHelper = new HabitDbHelper(this);
-        displayDatabaseInfo();
+        displayDatabaseInfo(readDatabase());
     }
-    private void displayDatabaseInfo() {
+    private Cursor readDatabase() {
         HabitDbHelper mDbHelper = new HabitDbHelper(this);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 HabitContract.HabitEntry._ID,
-                HabitContract.HabitEntry.COLUMN_HABIT_NAME };
-        Cursor cursor = db.query(
+                HabitContract.HabitEntry.COLUMN_HABIT_NAME,
+                HabitContract.HabitEntry.COLUMN_DATE };
+        return db.query(
                 HabitContract.HabitEntry.TABLE_NAME,
                 projection,
                 null,
@@ -42,19 +44,23 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 null,
                 null);
-
+    }
+    private void displayDatabaseInfo(Cursor cursor) {
         TextView displayView = (TextView) findViewById(R.id.database_activity);
         try {
             displayView.setText("You have entered " + cursor.getCount() + " habits.\n\n");
             displayView.append(HabitContract.HabitEntry._ID + " - " +
-                    HabitContract.HabitEntry.COLUMN_HABIT_NAME + " \n");
+                    HabitContract.HabitEntry.COLUMN_HABIT_NAME +
+                    " - " + HabitContract.HabitEntry.COLUMN_DATE + " \n");
             int idColumnIndex = cursor.getColumnIndex(HabitContract.HabitEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(HabitContract.HabitEntry.COLUMN_HABIT_NAME);
+            int dateColumnIndex = cursor.getColumnIndex(HabitContract.HabitEntry.COLUMN_DATE);
             while (cursor.moveToNext()) {
                 int currentID = cursor.getInt(idColumnIndex);
                 String currentHabitName = cursor.getString(nameColumnIndex);
+                String currentDate = cursor.getString(dateColumnIndex);
                 displayView.append(("\n" + currentID + " - " +
-                        currentHabitName));
+                        currentHabitName + " - " + currentDate));
             }
         } finally {
             cursor.close();
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(HabitContract.HabitEntry.COLUMN_HABIT_NAME, "Coding");
+        values.put(HabitContract.HabitEntry.COLUMN_DATE, "01-12-2121");
         long newRowId = db.insert(HabitContract.HabitEntry.TABLE_NAME, null, values);
     }
 }
