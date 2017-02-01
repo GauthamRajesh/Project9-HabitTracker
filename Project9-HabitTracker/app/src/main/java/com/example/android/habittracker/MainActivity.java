@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
                     HabitContract.HabitEntry.COLUMN_HABIT_NAME +
                     " - " + HabitContract.HabitEntry.COLUMN_DATE + " \n");
             int idColumnIndex = cursor.getColumnIndex(HabitContract.HabitEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(HabitContract.HabitEntry.COLUMN_HABIT_NAME);
+            String COLUMN_HABIT_NAME_NQ ="Habit Name";
+            int nameColumnIndex = cursor.getColumnIndex(COLUMN_HABIT_NAME_NQ);
             int dateColumnIndex = cursor.getColumnIndex(HabitContract.HabitEntry.COLUMN_DATE);
             while (cursor.moveToNext()) {
                 int currentID = cursor.getInt(idColumnIndex);
